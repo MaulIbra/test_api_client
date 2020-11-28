@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {deleteUser, getUser} from '../../api/UserService'
+import React, {useEffect, useState} from 'react';
+import {deleteUser, getEducation, getJobs, getUser} from '../../api/UserService'
 import {setListUser} from "../../redux/action/User";
 import {connect} from "react-redux";
 import UserList from "./UserList";
@@ -7,21 +7,77 @@ import {Button, Container, Pagination} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlusCircle} from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
+import UserForm from "./UserForm";
+import {setListJob} from "../../redux/action/Job";
+import {setListEducation} from "../../redux/action/Education";
 
 const UserContainer = (props) => {
 
-    const loadData =()=>{
-        getUser(1,10).then((result)=>{
+    const [showDetail, setShowDetail] = useState(false)
+    const [formType, setFormType] = useState("")
+    const [selectedData, setSelectedData] = useState({})
+
+    const loadData = () => {
+        getUser(1, 10).then((result) => {
             props.setListUser(result.payload)
         })
     }
 
-    useEffect(()=>{
+    const loadJobsData = () => {
+        getJobs().then((result) => {
+            props.setListJobs(result.payload)
+        })
+    }
+
+    const loadEducationData = () => {
+        getEducation().then((result) => {
+            props.setListEducation(result.payload)
+        })
+    }
+
+    useEffect(() => {
         loadData()
+        loadJobsData()
+        loadEducationData()
     },)
 
+    const createData = (value) => {
+        console.log(value)
+        // postMenu(menu,token).then((response)=>{
+        //     if (response.status===201){
+        //         showAlert('success','Successfull Insert Menu')
+        //         setSelectedData({})
+        //         setShowDetail(!showDetail)
+        //         setCustomPagination({
+        //             ...customPagination,
+        //             totalData: customPagination.totalData + 1
+        //         })
+        //         loadData()
+        //     }
+        // }).catch((error)=>{
+        //     showAlert('error','Error Insert data')
+        //     setShowDetail(!showDetail)
+        // })
+    }
 
-    const deleteData = (id)=>{
+    const updateData = (id, value) => {
+        console.log(value)
+        console.log(id)
+        // updateMenu(menuId,menu,token).then((response)=>{
+        //     if (response.status === 200){
+        //         showAlert('success','Successfull Update Menu')
+        //         setSelectedData({})
+        //         setShowDetail(!showDetail)
+        //     }
+        //     loadData()
+        // }).catch((error)=>{
+        //     showAlert('error','Error Edited data')
+        //     setShowDetail(!showDetail)
+        // })
+    }
+
+
+    const deleteData = (id) => {
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -32,8 +88,8 @@ const UserContainer = (props) => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.value) {
-                deleteUser(id).then((response)=>{
-                    if (response.statusCode === 200){
+                deleteUser(id).then((response) => {
+                    if (response.statusCode === 200) {
                         Swal.fire(
                             'Deleted!',
                             'Your file has been deleted.',
@@ -41,7 +97,7 @@ const UserContainer = (props) => {
                         ).then(r => r.dismiss)
                         loadData()
                     }
-                }).catch(()=>{
+                }).catch(() => {
                     Swal.fire(
                         'Error!',
                         'Error Deleted File',
@@ -52,9 +108,31 @@ const UserContainer = (props) => {
         })
     }
 
+    const showModals = (formType, value) => {
+        if (formType === "Create") {
+            value = {}
+        }
+        setShowDetail(!showDetail)
+        setSelectedData(value)
+        setFormType(formType)
+    }
+
+    const hideDetail = () => {
+        setSelectedData({})
+        setShowDetail(!showDetail)
+    }
+
     return (
         <Container>
             <div className="table-bordered container-table mt-5">
+                <UserForm
+                    formType={formType}
+                    editedData={selectedData}
+                    create={(menu) => createData(menu)}
+                    update={(menuId, menu) => updateData(menuId, menu)}
+                    show={showDetail}
+                    hide={() => hideDetail()}
+                />
                 <div className="container-action">
                     <Button variant="outline-primary">
                         <FontAwesomeIcon icon={faPlusCircle} className="mr-2"/>Add User
@@ -62,7 +140,9 @@ const UserContainer = (props) => {
                 </div>
                 <div className="container-list">
                     <UserList
-                        deleted={(id)=>deleteData(id)}
+                        edited={(value) => showModals("Edit", value)}
+                        showDetail={(value) => showModals("Detail", value)}
+                        deleted={(id) => deleteData(id)}
                     />
                 </div>
                 <div className="container-pagination">
@@ -77,7 +157,9 @@ const UserContainer = (props) => {
 };
 
 const mapDispatchToProps = {
-    setListUser : setListUser
+    setListUser: setListUser,
+    setListJobs: setListJob,
+    setListEducation: setListEducation,
 }
 
-export default connect(null,mapDispatchToProps)(UserContainer);
+export default connect(null, mapDispatchToProps)(UserContainer);

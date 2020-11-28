@@ -45,4 +45,4 @@ const mapStateToProps = (state)=>{
     }
 }
 
-export default connect(mapStateToProps)(UserList);
+export default connect(mapStateToProps,null)(UserList);

@@ -26,4 +26,28 @@ const deleteUser = async function (id) {
     return response.data
 }
 
-export {getUser,deleteUser}
+const getJobs = async function () {
+    let response = await axios.get(
+        '/job',
+        {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    )
+    return response.data
+}
+
+const getEducation = async function () {
+    let response = await axios.get(
+        '/education',
+        {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    )
+    return response.data
+}
+
+export {getUser,deleteUser,getJobs,getEducation}
