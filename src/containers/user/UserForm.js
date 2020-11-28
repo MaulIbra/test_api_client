@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 
 const UserForm = (props) => {
 
-    const {formType, editedData, show, hide, jobs,education} = props
+    const {formType, editedData, show, hide, jobs, education} = props
     const [userInput, setUserInput] = useState({
         idCardNumber: "",
         username: "",
@@ -49,6 +49,7 @@ const UserForm = (props) => {
         let user = {
             idCardNumber: userInput.idCardNumber,
             username: userInput.username,
+            dateOfBirth: userInput.dateOfBirth,
             job: {
                 jobId: userInput.job
             },
@@ -84,7 +85,7 @@ const UserForm = (props) => {
     return (
         <Modal show={show}>
             <Modal.Header>
-                <Modal.Title>{formType} Menu</Modal.Title>
+                <Modal.Title>{formType} User</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form id="form">
@@ -110,27 +111,26 @@ const UserForm = (props) => {
                             handleChangeInput("username", e.target.value)
                         }}
                     />
-                    <InputComponent
-                        inputType={"text"}
-                        inputName={"setDoB"}
-                        inputLabel={"Tanggal Lahir"}
-                        value={userInput.dateOfBirth}
-                        disable={formType === "Detail"}
-                        inputPlaceholder={"Masukkan Tanggal Lahir"}
-                        onChange={e => {
-                            handleChangeInput("dateOfBirth", e.target.value)
-                        }}
-                    />
+                    <Form.Group>
+                        <Form.Label>Tanggal Lahir</Form.Label>
+                        <Form.Control
+                            disabled={formType === "Detail"}
+                            type="date"
+                            value={userInput.dateOfBirth}
+                            onChange={e => handleChangeInput("dateOfBirth", e.target.value)}
+                        />
+                    </Form.Group>
                     <Form.Group>
                         <Form.Label>Pekerjaan</Form.Label>
-                        <Form.Control disabled={formType === "Detail"} as="select" size="md" value={userInput.job}
-                                      onChange={e => {
-                                          handleChangeInput("job", e.target.value)
-                                      }}>
+                        <Form.Control
+                            disabled={formType === "Detail"}
+                            as="select" size="md"
+                            value={userInput.job}
+                            onChange={e => {handleChangeInput("job", e.target.value)}}>
                             <option>-- Pilih Pekerjaan --</option>
-                            {jobs.map((val) => {
-                                return (<option value={val.jobId} key={val.jobId}>{val.jobLabel}</option>)
-                            })}
+                                {jobs.map((val) => {
+                                    return (<option value={val.jobId} key={val.jobId}>{val.jobLabel}</option>)
+                                })}
                         </Form.Control>
                     </Form.Group>
 
@@ -140,21 +140,25 @@ const UserForm = (props) => {
                             disabled={formType === "Detail"}
                             as="select" size="md"
                             value={userInput.education}
-                            onChange={e => {
-                                handleChangeInput("education", e.target.value)
-                            }}>
+                            onChange={e => {handleChangeInput("education", e.target.value)}}>
                             <option>-- Pilih Pendidikan --</option>
-                            {education.map((val) => {
-                                return (<option value={val.educationId} key={val.educationId}>{val.educationLabel}</option>)
-                            })}
+                                {education.map((val) => {
+                                    return (
+                                        <option value={val.educationId} key={val.educationId}>{val.educationLabel}</option>)
+                                })}
                         </Form.Control>
                     </Form.Group>
 
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                {formType === "Detail" ? "" : <ButtonComponent btnLabel={formType} validation={validationForm()}
-                                                               click={() => handleSubmit(formType, editedData.idUser)}/>}
+                {formType === "Detail" ? "" :
+                    <ButtonComponent
+                        btnLabel={formType}
+                        validation={validationForm()}
+                        click={() => handleSubmit(formType, editedData.idUser)}
+                    />
+                }
                 <Button variant="primary" onClick={hide}>Close</Button>
             </Modal.Footer>
         </Modal>

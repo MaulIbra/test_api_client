@@ -2,6 +2,32 @@ import axios from "axios";
 
 const BASE_URL = "/user"
 
+const postUser = async function (value) {
+    let response = await axios.post(
+        BASE_URL,
+        value,
+        {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    )
+    return response.data
+}
+
+const updateUser = async function (id, value) {
+    let response = await axios.put(
+        BASE_URL + '/' + id,
+        value,
+        {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    )
+    return response.data
+}
+
 const getUser = async function (page, limit) {
     let response = await axios.get(
         BASE_URL + '/' + page + "/" + limit,
@@ -50,4 +76,4 @@ const getEducation = async function () {
     return response.data
 }
 
-export {getUser,deleteUser,getJobs,getEducation}
+export {postUser,getUser,updateUser, deleteUser, getJobs, getEducation}

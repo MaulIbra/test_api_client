@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {deleteUser, getEducation, getJobs, getUser} from '../../api/UserService'
+import {deleteUser, getEducation, getJobs, getUser, postUser, updateUser} from '../../api/UserService'
 import {setListUser} from "../../redux/action/User";
 import {connect} from "react-redux";
 import UserList from "./UserList";
@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import UserForm from "./UserForm";
 import {setListJob} from "../../redux/action/Job";
 import {setListEducation} from "../../redux/action/Education";
+import {showAlert} from "../../component/AlertComponent";
 
 const UserContainer = (props) => {
 
@@ -42,38 +43,32 @@ const UserContainer = (props) => {
     },)
 
     const createData = (value) => {
-        console.log(value)
-        // postMenu(menu,token).then((response)=>{
-        //     if (response.status===201){
-        //         showAlert('success','Successfull Insert Menu')
-        //         setSelectedData({})
-        //         setShowDetail(!showDetail)
-        //         setCustomPagination({
-        //             ...customPagination,
-        //             totalData: customPagination.totalData + 1
-        //         })
-        //         loadData()
-        //     }
-        // }).catch((error)=>{
-        //     showAlert('error','Error Insert data')
-        //     setShowDetail(!showDetail)
-        // })
+        postUser(value).then((response) => {
+            if (response.statusCode === 201) {
+                showAlert('success', 'Successfull Insert Menu')
+                setSelectedData({})
+                setShowDetail(!showDetail)
+                loadData()
+            }
+        }).catch((error) => {
+            console.log(value)
+            showAlert('error', 'Error Insert data')
+            setShowDetail(!showDetail)
+        })
     }
 
     const updateData = (id, value) => {
-        console.log(value)
-        console.log(id)
-        // updateMenu(menuId,menu,token).then((response)=>{
-        //     if (response.status === 200){
-        //         showAlert('success','Successfull Update Menu')
-        //         setSelectedData({})
-        //         setShowDetail(!showDetail)
-        //     }
-        //     loadData()
-        // }).catch((error)=>{
-        //     showAlert('error','Error Edited data')
-        //     setShowDetail(!showDetail)
-        // })
+        updateUser(id, value).then((response) => {
+            if (response.statusCode === 200) {
+                showAlert('success', 'Successfull Update Menu')
+                setSelectedData({})
+                setShowDetail(!showDetail)
+            }
+            loadData()
+        }).catch((error) => {
+            showAlert('error', 'Error Edited data')
+            setShowDetail(!showDetail)
+        })
     }
 
 
@@ -118,8 +113,8 @@ const UserContainer = (props) => {
     }
 
     const hideDetail = () => {
-        setSelectedData({})
         setShowDetail(!showDetail)
+        setSelectedData({})
     }
 
     return (
@@ -134,7 +129,7 @@ const UserContainer = (props) => {
                     hide={() => hideDetail()}
                 />
                 <div className="container-action">
-                    <Button variant="outline-primary">
+                    <Button variant="outline-primary" onClick={() => showModals("Create")}>
                         <FontAwesomeIcon icon={faPlusCircle} className="mr-2"/>Add User
                     </Button>
                 </div>
