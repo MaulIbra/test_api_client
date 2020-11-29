@@ -17,6 +17,7 @@ const UserContainer = (props) => {
     const [showDetail, setShowDetail] = useState(false)
     const [formType, setFormType] = useState("")
     const [selectedData, setSelectedData] = useState({})
+    const [dataError,setDataError] = useState({})
     const [page, setPage] = useState({
         currentPage: 1,
         firstPage: 1,
@@ -62,13 +63,18 @@ const UserContainer = (props) => {
             if (response.statusCode === 201) {
                 showAlert('success', 'Successfull Insert Menu')
                 setSelectedData({})
+                setDataError({})
                 setShowDetail(!showDetail)
                 loadData()
             }
         }).catch((error) => {
-            console.log(value)
-            showAlert('error', 'Error Insert data')
-            setShowDetail(!showDetail)
+            if(error.response.data.statusCode === 400){
+                setSelectedData(error.response.data.payload)
+                setDataError(error.response.data.payload)
+            }else{
+                showAlert('error', 'Error Insert data')
+                setShowDetail(!showDetail)
+            }
         })
     }
 
@@ -77,12 +83,18 @@ const UserContainer = (props) => {
             if (response.statusCode === 200) {
                 showAlert('success', 'Successfull Update Menu')
                 setSelectedData({})
+                setDataError({})
                 setShowDetail(!showDetail)
             }
             loadData()
         }).catch((error) => {
-            showAlert('error', 'Error Edited data')
-            setShowDetail(!showDetail)
+            if(error.response.data.statusCode === 400){
+                setSelectedData(error.response.data.payload)
+                setDataError(error.response.data.payload)
+            }else{
+                showAlert('error', 'Error Insert data')
+                setShowDetail(!showDetail)
+            }
         })
     }
 
@@ -130,6 +142,7 @@ const UserContainer = (props) => {
     const hideDetail = () => {
         setShowDetail(!showDetail)
         setSelectedData({})
+        setDataError({})
     }
 
     const pageClick = (i)=>{
@@ -157,6 +170,7 @@ const UserContainer = (props) => {
                 <UserForm
                     formType={formType}
                     editedData={selectedData}
+                    errorData={dataError}
                     create={(menu) => createData(menu)}
                     update={(menuId, menu) => updateData(menuId, menu)}
                     show={showDetail}

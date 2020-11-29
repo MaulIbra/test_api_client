@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 
 const UserForm = (props) => {
 
-    const {formType, editedData, show, hide, jobs, education} = props
+    const {formType, editedData,errorData, show, hide, jobs, education} = props
     const [userInput, setUserInput] = useState({
         idCardNumber: "",
         username: "",
@@ -90,7 +90,7 @@ const UserForm = (props) => {
             <Modal.Body>
                 <Form id="form">
                     <InputComponent
-                        inputType={"text"}
+                        inputType={"number"}
                         inputName={"setIdCardNumber"}
                         inputLabel={"Nomor KTP"}
                         value={userInput.idCardNumber}
@@ -100,6 +100,9 @@ const UserForm = (props) => {
                             handleChangeInput("idCardNumber", e.target.value)
                         }}
                     />
+                    <div className="container-error">
+                        <small className="text-danger">{errorData.errors === undefined ?"":errorData.errors.IdCardNumber === undefined ? "":errorData.errors.IdCardNumber}</small>
+                    </div>
                     <InputComponent
                         inputType={"text"}
                         inputName={"setUsername"}

@@ -163,7 +163,9 @@
 }
 
 .container-error{
-  margin-bottom: 12px;
+  margin-top: -12px;
+  margin-bottom: 18px;
+  margin-left: 6px;
 }
 
 .navigation-text-active {
