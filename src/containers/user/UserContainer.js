@@ -17,10 +17,24 @@ const UserContainer = (props) => {
     const [showDetail, setShowDetail] = useState(false)
     const [formType, setFormType] = useState("")
     const [selectedData, setSelectedData] = useState({})
+    const [page, setPage] = useState({
+        currentPage: 1,
+        firstPage: 1,
+        lastPage: 0,
+        totalData: 0,
+        limit: 6
+    })
 
     const loadData = () => {
-        getUser(1, 10).then((result) => {
-            props.setListUser(result.payload)
+        getUser(page.currentPage, page.limit).then((result) => {
+            props.setListUser(result.payload.users)
+            setPage({
+                ...page,
+                currentPage: result.payload.metadata.currentPage,
+                firstPage: result.payload.metadata.firstPage,
+                lastPage: result.payload.metadata.lastPage,
+                totalData: result.payload.metadata.totalData
+            })
         })
     }
 
@@ -40,7 +54,8 @@ const UserContainer = (props) => {
         loadData()
         loadJobsData()
         loadEducationData()
-    },)
+    },[page.currentPage])
+
 
     const createData = (value) => {
         postUser(value).then((response) => {
@@ -117,6 +132,25 @@ const UserContainer = (props) => {
         setSelectedData({})
     }
 
+    const pageClick = (i)=>{
+        if (i >= page.firstPage && i <= page.lastPage){
+            setPage({
+                ...page,
+                currentPage: i
+            })
+        }
+    }
+
+    let pagination = []
+    for (let i = 1; i <= page.lastPage; i++) {
+        if (i === page.currentPage) {
+            pagination.push(<Pagination.Item active key={i}>{i}</Pagination.Item>)
+        } else {
+            pagination.push(<Pagination.Item key={i} onClick={() => pageClick(i)}>{i}</Pagination.Item>)
+        }
+    }
+
+
     return (
         <Container>
             <div className="table-bordered container-table mt-5">
@@ -141,10 +175,13 @@ const UserContainer = (props) => {
                     />
                 </div>
                 <div className="container-pagination">
-                    <Pagination>
-                        <Pagination.First/>
-                        <Pagination.Last/>
-                    </Pagination>
+                    <div className="container-pagination">
+                        <Pagination>
+                            <Pagination.First onClick={()=>pageClick(page.currentPage-1)}/>
+                            {pagination}
+                            <Pagination.Last onClick={()=>pageClick(page.currentPage+1)}/>
+                        </Pagination>
+                    </div>
                 </div>
             </div>
         </Container>
