@@ -2,6 +2,8 @@ import React from 'react';
 import {Navbar, Nav, Container} from "react-bootstrap";
 import logo from '../assets/logo.png'
 import {Link, withRouter} from "react-router-dom";
+import {faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const HeaderComponent = (props) => {
 
@@ -21,6 +23,10 @@ const HeaderComponent = (props) => {
                 <Nav className="mr-auto">
                     <Link to="/home" className={props.history.location.pathname === '/home' ? "navigation-text-active" : "navigation-text"}>Home</Link>
                     <Link to="/user" className={props.history.location.pathname === '/user' ? "navigation-text-active" : "navigation-text"}>User</Link>
+                </Nav>
+                <Nav className="justify-content-end">
+                    <label className="navigation-text" onClick={props.logout}>Logout</label>
+                    <FontAwesomeIcon className="m-auto" icon={faSignOutAlt} />
                 </Nav>
             </Container>
         </Navbar>

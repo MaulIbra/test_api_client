@@ -1,7 +1,7 @@
 import React from 'react';
-import LoginForm from "./LoginForm";
+import AuthForm from "./AuthForm";
 
-const Login = (props) => {
+const Auth = (props) => {
 
     const {onLogin} = props
 
@@ -9,10 +9,10 @@ const Login = (props) => {
     return (
         <div className="login-pages">
             <div className="login-form">
-                <LoginForm onLogin={()=>onLogin()}/>
+                <AuthForm onLogin={()=>onLogin()}/>
             </div>
         </div>
     );
 };
 
-export default Login;
+export default Auth;

@@ -3,7 +3,7 @@ import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import HeaderComponent from "./component/HeaderComponent";
 import HomeContainer from "./containers/home/HomeContainer";
 import UserContainer from "./containers/user/UserContainer";
-import Login from "./containers/login/Login";
+import Auth from "./containers/auth/Auth";
 
 
 const routes = [
@@ -67,7 +67,7 @@ class Routes extends Component {
                 <HeaderComponent logout={() => this.onLogout()}/>
                 <Switch>
                     <Route path="/" exact>
-                        <Login onLogin={this.onLogin}/>
+                        <Auth onLogin={this.onLogin}/>
                     </Route>
                     {routeList}
                 </Switch>

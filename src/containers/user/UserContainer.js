@@ -23,12 +23,16 @@ const UserContainer = (props) => {
         firstPage: 1,
         lastPage: 0,
         totalData: 0,
-        limit: 6
+        limit: 5
     })
 
     const loadData = () => {
         getUser(page.currentPage, page.limit,sessionStorage.getItem('token')).then((result) => {
-            props.setListUser(result.payload.users)
+            if (result.payload.users === undefined){
+                props.setListUser([])
+            }else{
+                props.setListUser(result.payload.users)
+            }
             setPage({
                 ...page,
                 currentPage: result.payload.metadata.currentPage,
@@ -55,7 +59,8 @@ const UserContainer = (props) => {
         loadData()
         loadJobsData()
         loadEducationData()
-    },[page.currentPage])
+    },// eslint-disable-next-line
+        [page.currentPage])
 
 
     const createData = (value) => {

@@ -48,7 +48,7 @@ const UserForm = (props) => {
     const handleSubmit = (formType, id) => {
         let user = {
             idCardNumber: userInput.idCardNumber,
-            username: userInput.username,
+            username: userInput.username.toUpperCase(),
             dateOfBirth: userInput.dateOfBirth,
             job: {
                 jobId: userInput.job
@@ -95,7 +95,7 @@ const UserForm = (props) => {
                         inputLabel={"Nomor KTP"}
                         value={userInput.idCardNumber}
                         disable={formType === "Detail"}
-                        inputPlaceholder={"Masukkan Nomor KTP"}
+                        inputPlaceholder={"Masukkan Nomor KTP (maximum 16 digit)"}
                         onChange={e => {
                             handleChangeInput("idCardNumber", e.target.value)
                         }}
