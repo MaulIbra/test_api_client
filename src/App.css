@@ -1,3 +1,14 @@
+.login-pages {
+  background-image: url(assets/background.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
+
 .App {
   text-align: center;
 }

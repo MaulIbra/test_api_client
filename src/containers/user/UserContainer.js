@@ -27,7 +27,7 @@ const UserContainer = (props) => {
     })
 
     const loadData = () => {
-        getUser(page.currentPage, page.limit).then((result) => {
+        getUser(page.currentPage, page.limit,sessionStorage.getItem('token')).then((result) => {
             props.setListUser(result.payload.users)
             setPage({
                 ...page,
@@ -40,13 +40,13 @@ const UserContainer = (props) => {
     }
 
     const loadJobsData = () => {
-        getJobs().then((result) => {
+        getJobs(sessionStorage.getItem('token')).then((result) => {
             props.setListJobs(result.payload)
         })
     }
 
     const loadEducationData = () => {
-        getEducation().then((result) => {
+        getEducation(sessionStorage.getItem('token')).then((result) => {
             props.setListEducation(result.payload)
         })
     }
@@ -59,7 +59,7 @@ const UserContainer = (props) => {
 
 
     const createData = (value) => {
-        postUser(value).then((response) => {
+        postUser(value,sessionStorage.getItem('token')).then((response) => {
             if (response.statusCode === 201) {
                 showAlert('success', 'Successfull Insert Menu')
                 setSelectedData({})
@@ -79,7 +79,7 @@ const UserContainer = (props) => {
     }
 
     const updateData = (id, value) => {
-        updateUser(id, value).then((response) => {
+        updateUser(id, value,sessionStorage.getItem('token')).then((response) => {
             if (response.statusCode === 200) {
                 showAlert('success', 'Successfull Update Menu')
                 setSelectedData({})
@@ -110,7 +110,7 @@ const UserContainer = (props) => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.value) {
-                deleteUser(id).then((response) => {
+                deleteUser(id,sessionStorage.getItem('token')).then((response) => {
                     if (response.statusCode === 200) {
                         Swal.fire(
                             'Deleted!',

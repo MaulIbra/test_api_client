@@ -19,7 +19,7 @@ const HeaderComponent = (props) => {
                     Maulana
                 </Navbar.Brand>
                 <Nav className="mr-auto">
-                    <Link to="/" className={props.history.location.pathname === '/' ? "navigation-text-active" : "navigation-text"}>Home</Link>
+                    <Link to="/home" className={props.history.location.pathname === '/home' ? "navigation-text-active" : "navigation-text"}>Home</Link>
                     <Link to="/user" className={props.history.location.pathname === '/user' ? "navigation-text-active" : "navigation-text"}>User</Link>
                 </Nav>
             </Container>
