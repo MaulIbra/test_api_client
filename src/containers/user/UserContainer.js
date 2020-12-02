@@ -66,7 +66,7 @@ const UserContainer = (props) => {
     const createData = (value) => {
         postUser(value,sessionStorage.getItem('token')).then((response) => {
             if (response.statusCode === 201) {
-                showAlert('success', 'Successfull Insert Menu')
+                showAlert('success', 'Successfull Insert User')
                 setSelectedData({})
                 setDataError({})
                 setShowDetail(!showDetail)
@@ -77,7 +77,7 @@ const UserContainer = (props) => {
                 setSelectedData(error.response.data.payload)
                 setDataError(error.response.data.payload)
             }else{
-                showAlert('error', 'Error Insert data')
+                showAlert('error', 'Error Insert User')
                 setShowDetail(!showDetail)
             }
         })
@@ -86,7 +86,7 @@ const UserContainer = (props) => {
     const updateData = (id, value) => {
         updateUser(id, value,sessionStorage.getItem('token')).then((response) => {
             if (response.statusCode === 200) {
-                showAlert('success', 'Successfull Update Menu')
+                showAlert('success', 'Successfull Update User')
                 setSelectedData({})
                 setDataError({})
                 setShowDetail(!showDetail)
@@ -97,7 +97,7 @@ const UserContainer = (props) => {
                 setSelectedData(error.response.data.payload)
                 setDataError(error.response.data.payload)
             }else{
-                showAlert('error', 'Error Insert data')
+                showAlert('error', 'Error Update User')
                 setShowDetail(!showDetail)
             }
         })
