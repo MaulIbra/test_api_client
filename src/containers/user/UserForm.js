@@ -130,7 +130,7 @@ const UserForm = (props) => {
                             as="select" size="md"
                             value={userInput.job}
                             onChange={e => {handleChangeInput("job", e.target.value)}}>
-                            <option>-- Pilih Pekerjaan --</option>
+                            <option value="" disabled selected >-- Pilih Pekerjaan --</option>
                                 {jobs.map((val) => {
                                     return (<option value={val.jobId} key={val.jobId}>{val.jobLabel}</option>)
                                 })}
@@ -144,7 +144,7 @@ const UserForm = (props) => {
                             as="select" size="md"
                             value={userInput.education}
                             onChange={e => {handleChangeInput("education", e.target.value)}}>
-                            <option>-- Pilih Pendidikan --</option>
+                            <option value="" disabled selected >-- Pilih Pendidikan --</option>
                                 {education.map((val) => {
                                     return (
                                         <option value={val.educationId} key={val.educationId}>{val.educationLabel}</option>)
